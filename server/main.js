@@ -2,14 +2,6 @@ var fs = require('fs');
 var http = require('http');
 var server = http.createServer();
 
-var words = {
-  'おすすめ': 0.3,
-  'ありがとう': 0.3,
-  'おいしい': 0.15,
-  'おかわり': 0.1,
-  'recommend': 0.3,
-  'delicious': 0.15,
-}
 
 server.on('request', function(req, res) {
   var stream = fs.createReadStream('index.html');
@@ -44,12 +36,12 @@ io.sockets.on('connection', function(socket) {
     console.log('emotion-in', data);
 
     if(data.name == 'face'){
-      if(data.data.happiness){
-        emotionInData += data.data.happiness * 0.3;
+      if(data.data){
+        emotionInData += data.data;
       }
     }else if(data.name == 'sentence'){
-      if(words[data.data]){
-        emotionInData += words[data.data];
+      if(data.data){
+        emotionInData += data.data;
       }
     }else if(data.name == 'empty'){
       emotionInData = 0;

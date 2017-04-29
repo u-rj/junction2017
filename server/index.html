@@ -122,14 +122,14 @@
             $('.emotion-in-face').click(function(){
                 socket.emit('emotion-in', {
                     name: 'face',
-                    data: {"happiness": 0.5}
+                    data: 0.15
                 });
             });
 
             $('.emotion-in-sentence').click(function(){
                 socket.emit('emotion-in', {
                     name: 'sentence',
-                    data: 'ありがとう'
+                    data: 0.2
                 });
             });
 
