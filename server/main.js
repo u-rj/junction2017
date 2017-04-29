@@ -18,16 +18,8 @@ app.use(bodyParser.json());
 // 3000番を指定
 var port = 8001;
 
-// expressでAPIサーバを使うための準備
-var router = express.Router();
-
-router.use(function(req, res, next) {
-    console.log('Something is happening.');
-    next();
-});
-
 // 正しく実行出来るか左記にアクセスしてテストする (GET http://localhost:3000/api)
-router.get('/', function(req, res) {
+app.get('/emotion', function(req, res) {
   if(req.query.face || req.query.face == 0){
     emotionInData += req.query.face * 1;
     res.json({ status: 'Success', data: emotionInData });
@@ -45,13 +37,26 @@ router.get('/', function(req, res) {
   res.json({ status: 'Success', data: emotionInData });
 });
 
+// 正しく実行出来るか左記にアクセスしてテストする (GET http://localhost:3000/api)
+app.get('/command', function(req, res) {
+  var name = req.query.name;
+  var data = req.query.data;
+  
+  if(name && data){
+    commandInData[name] = data
+    res.json({ status: 'Success', name: name, data: commandInData[name] });
+    return;
+  }else if(name && commandInData[name]){
+    res.json({ status: 'Success', name: name, data: commandInData[name] });
+    return;
+  }
 
-// ルーティング登録
-app.use('/emotion', router);
+  res.json({ status: 'Failure'});
+});
 
 //サーバ起動
 app.listen(port);
-console.log('listen on port ' + port);
+// console.log('listen on port ' + port);
 
 //express end
 
