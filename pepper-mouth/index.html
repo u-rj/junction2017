@@ -45,7 +45,7 @@
             //----------------------------------------
             socket.on('emotion-out', function(data) {
                 console.log('emotion-out', data);
-                var num = Math.ceil(data * 5);
+                var num = Math.ceil(data * 4);
                 faceChange(num);
                 debug(data + ',' + num);
             });
@@ -58,8 +58,8 @@
 
 
         function faceChange(num){
-            if(num > 5){
-                num = 5;
+            if(num > 6){
+                num = 6;
             }
             if(num < 0){
                 num = 0;
