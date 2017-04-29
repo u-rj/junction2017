@@ -1,9 +1,63 @@
+var emotionInData = 0;
+var commandInData = [];
+
 var fs = require('fs');
 var http = require('http');
 var server = http.createServer();
 
+//express
+// 必要なパッケージの読み込み
+var express    = require('express');
+var app        = express();
+var bodyParser = require('body-parser');
+
+// POSTでdataを受け取るための記述
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// 3000番を指定
+var port = 8001;
+
+// expressでAPIサーバを使うための準備
+var router = express.Router();
+
+router.use(function(req, res, next) {
+    console.log('Something is happening.');
+    next();
+});
+
+// 正しく実行出来るか左記にアクセスしてテストする (GET http://localhost:3000/api)
+router.get('/', function(req, res) {
+  if(req.query.face || req.query.face == 0){
+    emotionInData += req.query.face * 1;
+    res.json({ status: 'Success', data: emotionInData });
+    return;
+  }else if(req.query.sentence || req.query.sentence == 0){
+    emotionInData += req.query.sentence * 1;
+    res.json({ status: 'Success', data: emotionInData });
+    return;
+  }else if(req.query.empty || req.query.empty == 0){
+    emotionInData = 0 * 1;
+    res.json({ status: 'Success', data: emotionInData });
+    return;
+  }
+
+  res.json({ status: 'Success', data: emotionInData });
+});
+
+
+// ルーティング登録
+app.use('/emotion', router);
+
+//サーバ起動
+app.listen(port);
+console.log('listen on port ' + port);
+
+//express end
+
 
 server.on('request', function(req, res) {
+  console.log(req.url);
   var stream = fs.createReadStream('index.html');
   res.writeHead(200, {'Content-Type': 'text/html'});
   stream.pipe(res);
@@ -16,7 +70,7 @@ io.sockets.on('connection', function(socket) {
 
   //command-in
   //----------------------------------------
-  var commandInData = [];
+  
   socket.on('command-in', function (data) {
     console.log('command-in', data);
 
@@ -31,7 +85,7 @@ io.sockets.on('connection', function(socket) {
 
   //emotion-in
   //----------------------------------------
-  var emotionInData = 0;
+  
   socket.on('emotion-in', function (data) {
     console.log('emotion-in', data);
 

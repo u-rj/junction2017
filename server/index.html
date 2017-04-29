@@ -20,6 +20,7 @@
         <li>つまりemitするときは*-in onするときは*-outを指定する</li>
         <li>データの受け取りはbroadcastなので全ての端末に送信される</li>
         <ul>
+        <h4 class="header">Socket IO</h4>
         <table class="bordered">
             <thead>
                 <tr>
@@ -54,6 +55,32 @@
                         face: 顔の感情の数値を保存できる<br>
                         sentence: 言葉の感情の数値を保存できる<br>
                         empty: 感情をリセットする、dataは必要なし
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4 class="header">Web API</h4>
+        <table class="bordered">
+            <thead>
+                <tr>
+                    <th>url</th>
+                    <th>データ形式</th>
+                    <th>説明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>/emotion/</td>
+                    <td>
+                        取得:パラメータなし<br>
+                        顔の感情:?face=0.1<br>
+                        言葉の感情:?sentence=0.1<br>
+                        感情のリセット:?empty<br>
+                    </td>
+                    <td>
+                        感情データの保存/取得を行う。<br>
+                        感情データは0.0-1.0(100%)で表現する。<br><br>
                     </td>
                 </tr>
             </tbody>
@@ -131,7 +158,7 @@
             });
 
 
-            //command-in/ command-out
+            //emotion-in/ emotion-out
             //----------------------------------------
             socket.on('emotion-out', function(data) {
                 console.log('emotion-out', data);
