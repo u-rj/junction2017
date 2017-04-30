@@ -23,18 +23,22 @@ app.get('/emotion', function(req, res) {
   if(req.query.face || req.query.face == 0){
     emotionInData += req.query.face * 1;
     res.json({ status: 'Success', data: emotionInData });
+    socket.emit('emotion-out', emotionInData);
     return;
   }else if(req.query.sentence || req.query.sentence == 0){
     emotionInData += req.query.sentence * 1;
     res.json({ status: 'Success', data: emotionInData });
+    socket.emit('emotion-out', emotionInData);
     return;
   }else if(req.query.empty || req.query.empty == 0){
     emotionInData = 0 * 1;
     res.json({ status: 'Success', data: emotionInData });
+    socket.emit('emotion-out', emotionInData);
     return;
   }
 
   res.json({ status: 'Success', data: emotionInData });
+  socket.emit('emotion-out', emotionInData);
 });
 
 // 正しく実行出来るか左記にアクセスしてテストする (GET http://localhost:3000/api)
@@ -53,6 +57,7 @@ app.get('/command', function(req, res) {
 
   res.json({ status: 'Failure'});
 });
+
 
 //サーバ起動
 app.listen(port);
